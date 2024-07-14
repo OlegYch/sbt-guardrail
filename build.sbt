@@ -22,7 +22,8 @@ ThisBuild / developers := List(
   )
 )
 
-ThisBuild / scalaVersion := "2.12.18"
+ThisBuild / scalacOptions := Seq("-target:jvm-1.8")
+//ThisBuild / pluginCrossBuild / sbtVersion := "1.5.0" //breaks on windows https://github.com/sbt/sbt/issues/7082
 ThisBuild / scalacOptions ++= List("-feature", "-Xexperimental")
 
 libraryDependencies ++= Seq(
@@ -44,13 +45,15 @@ git.gitDescribedVersion := git.gitDescribedVersion(v => {
 
 git.gitUncommittedChanges := git.gitCurrentTags.value.isEmpty
 
-val commonSettings = Seq(
+val commonSettings: SettingsDefinition = Seq(
   // Release
   publishMavenStyle := true,
   sonatypeCredentialHost := "s01.oss.sonatype.org",
   evictionErrorLevel := Level.Debug
 )
 
+
+scriptedBufferLog := false
 
 scriptedLaunchOpts := { scriptedLaunchOpts.value ++
   Seq("-Xmx1024M", "-Dplugin.version=" + version.value)
